@@ -35,9 +35,7 @@ public class UsuarioService {
     }
 
     public EncontrarUsuarioPorIdResponse encontrarPorId(Long id) {
-        return usuarioRepository.findById(id)
-                .map(usuario -> new EncontrarUsuarioPorIdResponse(usuario.getNome(), usuario.getEmail()))
-                .orElseThrow(() -> new UsuarioNaoEncontrado("Usuário com ID " + id + " não encontrado."));
+        return usuarioParaDTOResponse(encontrarUsuarioPorId(id));
     }
 
     public void deletarPorId(Long id){
@@ -45,6 +43,22 @@ public class UsuarioService {
         if (usuario != null) {
             usuarioRepository.deleteById(id);
         }
+    }
+
+    public Usuario encontrarUsuarioPorId(Long id){
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontrado("Usuário com ID " + id + " não encontrado."));
+    }
+
+    public EncontrarUsuarioPorIdResponse usuarioParaDTOResponse(Usuario usuario){
+        return new EncontrarUsuarioPorIdResponse(
+                usuario.getNome(), usuario.getEmail()
+        );
+    }
+
+    public Usuario encontrarUsuarioPorLogin(String login){
+        return usuarioComumRepository.findByLogin(login)
+                .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o Login " + login));
     }
 
     public void editar(EditarUsuarioRequest usuarioEditar) {
@@ -56,8 +70,7 @@ public class UsuarioService {
             usuarioComum.setLogin(usuarioEditar.login());
             usuarioComumRepository.save(usuarioComum);
         } else {
-            Usuario usuario = usuarioRepository.findById(usuarioEditar.id())
-                    .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o ID " + usuarioEditar.id()));
+            Usuario usuario = encontrarUsuarioPorId(usuarioEditar.id());
             usuario.setNome(usuarioEditar.nome());
             usuarioRepository.save(usuario);
         }

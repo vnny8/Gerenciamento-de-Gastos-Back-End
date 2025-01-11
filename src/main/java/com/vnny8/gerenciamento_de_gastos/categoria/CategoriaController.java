@@ -1,5 +1,8 @@
 package com.vnny8.gerenciamento_de_gastos.categoria;
 
+import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CategoriaResponse;
+import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CriarCategoriaRequest;
+import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.EditarCategoriaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +17,8 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody Categoria categoria) {
-        categoriaService.criar(categoria);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<CategoriaResponse> criar(@RequestBody CriarCategoriaRequest categoria) {
+        return ResponseEntity.status(201).body(categoriaService.criar(categoria));
     }
 
     @DeleteMapping("/deletar")
@@ -32,12 +34,12 @@ public class CategoriaController {
     }
 
     @GetMapping("/acessar")
-    public ResponseEntity<Categoria> acessar(@RequestParam("id") Long id) {
+    public ResponseEntity<CategoriaResponse> acessar(@RequestParam("id") Long id) {
         return ResponseEntity.status(200).body(categoriaService.acessar(id));
     }
 
     @GetMapping("/listarPorUsuario")
-    public ResponseEntity<List<Categoria>> listarPorUsuario(@RequestParam("id_usuario") Long id_usuario) {
+    public ResponseEntity<List<CategoriaResponse>> listarPorUsuario(@RequestParam("id_usuario") Long id_usuario) {
         return ResponseEntity.status(200).body(categoriaService.listar(id_usuario));
     }
 

@@ -1,7 +1,11 @@
 package com.vnny8.gerenciamento_de_gastos.usuario;
 
+import com.vnny8.gerenciamento_de_gastos.categoria.Categoria;
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 
 @Table(name = "usuario")
 @Data
@@ -21,4 +25,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String role;
+
+    // Não queremos serializar as categorias na resposta JSON
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Categoria> categorias;
 }

@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 public record AcessarSalarioResponse (
         Float valor,
         Boolean status,
-        LocalDateTime dataCadastro
+        LocalDateTime dataCadastro,
+        Long idUsuario
 ) {}

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-    @Query("SELECT DISTINCT c FROM Categoria c JOIN Gasto g ON g.categoria = c WHERE g.usuario = :usuario")
+    @Query("SELECT c FROM Categoria c WHERE c.usuario = :usuario")
     List<Categoria> findCategoriasByUsuario(@Param("usuario") Usuario usuario);
 }

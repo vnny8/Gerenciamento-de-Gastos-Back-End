@@ -26,9 +26,7 @@ public class SalarioService {
     private UsuarioService usuarioService;
 
     public void criar(CreateSalarioRequest createSalarioRequest) {
-        Usuario usuario = usuarioRepository.findById(createSalarioRequest.id_usuario())
-                .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o ID " + createSalarioRequest.id_usuario()));
-
+        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(createSalarioRequest.loginUsuario());
         Salario salario = new Salario();
         salario.setUsuario(usuario);
         salario.setValor(createSalarioRequest.valor());
@@ -47,7 +45,8 @@ public class SalarioService {
 
     public AcessarSalarioResponse acessarMostrar(Long id){
         Salario salario = acessar(id);
-        AcessarSalarioResponse salarioRetornar = new AcessarSalarioResponse(salario.getValor(), salario.getStatus(), salario.getDataCadastro());
+        AcessarSalarioResponse salarioRetornar = new AcessarSalarioResponse(salario.getValor(),
+                salario.getStatus(), salario.getDataCadastro(), salario.getUsuario().getId());
         return salarioRetornar;
     }
 
