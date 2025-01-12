@@ -1,11 +1,11 @@
-package com.vnny8.gerenciamento_de_gastos.gasto.DTOs;
+package com.vnny8.gerenciamento_de_gastos.gasto.dtos;
 
 import jakarta.validation.constraints.NotNull;
 
 public record CriarGastoRequest(
 
         @NotNull
-        Long id_usuario,
+        String loginUsuario,
 
         @NotNull
         String nome,
@@ -14,5 +14,5 @@ public record CriarGastoRequest(
         Float valor,
 
         @NotNull
-        Long id_categoria
+        Long idCategoria
 ) {}

@@ -45,8 +45,8 @@ public class CategoriaService {
         categoriaRepository.save(categoria);
     }
 
-    public List<CategoriaResponse> listar(Long id_usuario){
-        Usuario usuario = usuarioService.encontrarUsuarioPorId(id_usuario);
+    public List<CategoriaResponse> listar(String login){
+        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(login);
         return categoriaRepository.findCategoriasByUsuario(usuario).stream()
                 .map(this::transformaClasseParaDTOResponse)
                 .toList();

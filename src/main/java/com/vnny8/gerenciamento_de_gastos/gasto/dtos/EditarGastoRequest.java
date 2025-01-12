@@ -1,4 +1,4 @@
-package com.vnny8.gerenciamento_de_gastos.gasto.DTOs;
+package com.vnny8.gerenciamento_de_gastos.gasto.dtos;
 
 import jakarta.validation.constraints.NotNull;
 
