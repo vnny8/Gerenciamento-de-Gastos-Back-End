@@ -1,4 +1,4 @@
-package com.vnny8.gerenciamento_de_gastos.categoria.DTOs;
+package com.vnny8.gerenciamento_de_gastos.categoria.dtos;
 
 public record CategoriaResponse(
 

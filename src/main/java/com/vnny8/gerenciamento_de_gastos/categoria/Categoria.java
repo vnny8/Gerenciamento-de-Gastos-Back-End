@@ -17,7 +17,7 @@ public class Categoria {
     private String nome;
 
     @Column(length = 30)
-    private String cor_categoria;
+    private String corCategoria;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)

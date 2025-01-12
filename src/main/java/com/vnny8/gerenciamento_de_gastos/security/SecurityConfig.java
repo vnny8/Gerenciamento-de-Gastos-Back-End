@@ -3,7 +3,6 @@ package com.vnny8.gerenciamento_de_gastos.security;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -38,11 +36,14 @@ public class SecurityConfig {
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
 
-    @Autowired
-    private CustomOidcUserService customOidcUserService;
+    private final CustomOidcUserService customOidcUserService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    public SecurityConfig(CustomOidcUserService customOidcUserService,
+    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler){
+        this.customOidcUserService = customOidcUserService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, DelegatingJwtDecoder delegatingJwtDecoder) throws Exception {

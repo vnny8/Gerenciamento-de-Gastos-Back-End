@@ -1,28 +1,29 @@
 package com.vnny8.gerenciamento_de_gastos.salario;
 
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.AcessarSalarioResponse;
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.CreateSalarioRequest;
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.EditarSalarioRequest;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.AcessarSalarioResponse;
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.CreateSalarioRequest;
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.EditarSalarioRequest;
 
 @RestController
 @RequestMapping("/salario")
 public class SalarioController {
 
-    @Autowired
-    private SalarioService salarioService;
+    private final SalarioService salarioService;
+    public SalarioController(SalarioService salarioService){
+        this.salarioService = salarioService;
+    }
 
     @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody CreateSalarioRequest salario) {
+    public ResponseEntity<Void> criar(@RequestBody CreateSalarioRequest salario) {
         salarioService.criar(salario);
         return ResponseEntity.status(201).body(null);
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<?> deletar(@RequestParam("id") Long id){
+    public ResponseEntity<Void> deletar(@RequestParam("id") Long id){
         salarioService.deletar(id);
         return ResponseEntity.status(204).body(null);
     }
@@ -33,7 +34,7 @@ public class SalarioController {
     }
 
     @PutMapping("/editar")
-    public ResponseEntity<?> editar(@RequestBody EditarSalarioRequest salario){
+    public ResponseEntity<Void> editar(@RequestBody EditarSalarioRequest salario){
         salarioService.editar(salario);
         return ResponseEntity.status(204).body(null);
     }

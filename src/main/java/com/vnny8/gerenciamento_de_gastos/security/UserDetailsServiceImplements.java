@@ -1,7 +1,6 @@
 package com.vnny8.gerenciamento_de_gastos.security;
 
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioComumRepository;
-import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

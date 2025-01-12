@@ -1,11 +1,11 @@
 package com.vnny8.gerenciamento_de_gastos.categoria;
 
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CategoriaResponse;
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CriarCategoriaRequest;
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.EditarCategoriaRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.CategoriaResponse;
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.CriarCategoriaRequest;
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.EditarCategoriaRequest;
 
 import java.util.List;
 
@@ -13,8 +13,10 @@ import java.util.List;
 @RequestMapping("/categoria")
 public class CategoriaController {
 
-    @Autowired
-    private CategoriaService categoriaService;
+    private final CategoriaService categoriaService;
+    public CategoriaController(CategoriaService categoriaService){
+        this.categoriaService = categoriaService;
+    }
 
     @PostMapping("/criar")
     public ResponseEntity<CategoriaResponse> criar(@RequestBody CriarCategoriaRequest categoria) {
@@ -22,13 +24,13 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<?> deletar(@RequestParam("id") Long id) {
+    public ResponseEntity<Void> deletar(@RequestParam("id") Long id) {
         categoriaService.deletar(id);
         return ResponseEntity.status(204).build();
     }
 
     @PutMapping("/editar")
-    public ResponseEntity<?> editar(@RequestBody EditarCategoriaRequest categoria) {
+    public ResponseEntity<Void> editar(@RequestBody EditarCategoriaRequest categoria) {
         categoriaService.editar(categoria);
         return ResponseEntity.status(204).build();
     }

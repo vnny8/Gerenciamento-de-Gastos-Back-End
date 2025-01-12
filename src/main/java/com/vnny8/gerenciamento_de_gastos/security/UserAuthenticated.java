@@ -1,6 +1,5 @@
 package com.vnny8.gerenciamento_de_gastos.security;
 
-import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioComum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +18,6 @@ public class UserAuthenticated implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(List.of(new SimpleGrantedAuthority(usuario.getRole())));
         return List.of(new SimpleGrantedAuthority(usuario.getRole()));
     }
 

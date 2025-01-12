@@ -1,6 +1,5 @@
-package com.vnny8.gerenciamento_de_gastos.salario.DTOs;
+package com.vnny8.gerenciamento_de_gastos.salario.dtos;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateSalarioRequest (

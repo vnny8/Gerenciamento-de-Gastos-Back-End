@@ -28,11 +28,10 @@ public class DelegatingJwtDecoder implements JwtDecoder {
             String[] parts = token.split("\\.");
             String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
 
-            // Converte o payload para um Map
-            Map<String, Object> claims = objectMapper.readValue(payload, Map.class);
-            String issuer = (String) claims.get("iss");
+            // Converte o payload para um Map Guardar -> readValue(payload, Map.class)
+            Map<String, Object> claims = objectMapper.readValue(payload, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
 
-            System.out.println("issuer: " + issuer);
+            String issuer = (String) claims.get("iss");
 
             if ("https://accounts.google.com".equals(issuer)) {
                 // Usar o decoder do Google

@@ -1,6 +1,4 @@
-package com.vnny8.gerenciamento_de_gastos.salario.DTOs;
-
-import jakarta.validation.constraints.NotNull;
+package com.vnny8.gerenciamento_de_gastos.salario.dtos;
 
 import java.time.LocalDateTime;
 

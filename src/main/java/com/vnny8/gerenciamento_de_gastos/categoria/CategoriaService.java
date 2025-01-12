@@ -1,12 +1,11 @@
 package com.vnny8.gerenciamento_de_gastos.categoria;
 
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CategoriaResponse;
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.CriarCategoriaRequest;
-import com.vnny8.gerenciamento_de_gastos.categoria.DTOs.EditarCategoriaRequest;
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.CategoriaResponse;
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.CriarCategoriaRequest;
+import com.vnny8.gerenciamento_de_gastos.categoria.dtos.EditarCategoriaRequest;
 import com.vnny8.gerenciamento_de_gastos.exceptions.categoriaExceptions.CategoriaNaoEncontrada;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +13,19 @@ import java.util.List;
 @Service
 public class CategoriaService {
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    public CategoriaService(CategoriaRepository categoriaRepository,
+    UsuarioService usuarioService){
+        this.categoriaRepository = categoriaRepository;
+        this.usuarioService = usuarioService;
+    }
 
     public CategoriaResponse criar(CriarCategoriaRequest dto) {
         Categoria categoria = new Categoria();
         categoria.setNome(dto.nome());
-        categoria.setCor_categoria(dto.cor_categoria());
+        categoria.setCorCategoria(dto.cor_categoria());
         Usuario usuarioComum = usuarioService.encontrarUsuarioPorLogin(dto.loginUsuario());
         categoria.setUsuario(usuarioComum);
         return transformaClasseParaDTOResponse(categoriaRepository.save(categoria));
@@ -41,7 +43,7 @@ public class CategoriaService {
     public void editar(EditarCategoriaRequest categoriaDTO) {
         Categoria categoria = acessarCategoria(categoriaDTO.id());
         categoria.setNome(categoriaDTO.nome());
-        categoria.setCor_categoria(categoriaDTO.cor_categoria());
+        categoria.setCorCategoria(categoriaDTO.cor_categoria());
         categoriaRepository.save(categoria);
     }
 
@@ -61,7 +63,7 @@ public class CategoriaService {
         return new CategoriaResponse(
                 categoria.getId(),
                 categoria.getNome(),
-                categoria.getCor_categoria(),
+                categoria.getCorCategoria(),
                 categoria.getUsuario().getId()
         );
     }

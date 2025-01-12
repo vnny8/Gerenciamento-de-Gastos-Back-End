@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -28,8 +27,6 @@ public class JwtService {
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
-
-        System.out.println(roles);
 
         var claims = JwtClaimsSet.builder()
                 .issuer("Gerenciamento de Gastos")

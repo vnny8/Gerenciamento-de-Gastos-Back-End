@@ -1,14 +1,11 @@
 package com.vnny8.gerenciamento_de_gastos.salario;
 
 import com.vnny8.gerenciamento_de_gastos.exceptions.salarioExceptions.SalarioNaoEncontrado;
-import com.vnny8.gerenciamento_de_gastos.exceptions.usuarioExceptions.UsuarioNaoEncontrado;
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.AcessarSalarioResponse;
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.CreateSalarioRequest;
-import com.vnny8.gerenciamento_de_gastos.salario.DTOs.EditarSalarioRequest;
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.AcessarSalarioResponse;
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.CreateSalarioRequest;
+import com.vnny8.gerenciamento_de_gastos.salario.dtos.EditarSalarioRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
-import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioRepository;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +13,14 @@ import java.util.List;
 @Service
 public class SalarioService {
 
-    @Autowired
-    private SalarioRepository salarioRepository;
+    private final SalarioRepository salarioRepository;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private UsuarioService usuarioService;
+    public SalarioService(SalarioRepository salarioRepository,
+    UsuarioService usuarioService){
+        this.salarioRepository = salarioRepository;
+        this.usuarioService = usuarioService;
+    }
 
     public void criar(CreateSalarioRequest createSalarioRequest) {
         Usuario usuario = usuarioService.encontrarUsuarioPorLogin(createSalarioRequest.loginUsuario());
@@ -45,14 +42,13 @@ public class SalarioService {
 
     public AcessarSalarioResponse acessarMostrar(Long id){
         Salario salario = acessar(id);
-        AcessarSalarioResponse salarioRetornar = new AcessarSalarioResponse(salario.getValor(),
+        return new AcessarSalarioResponse(salario.getValor(),
                 salario.getStatus(), salario.getDataCadastro(), salario.getUsuario().getId());
-        return salarioRetornar;
     }
 
     public void deletar(Long id){
         Salario salario = acessar(id);
-        salarioRepository.deleteById(id);
+        salarioRepository.delete(salario);
     }
 
     public void editar(EditarSalarioRequest salarioRequest){
