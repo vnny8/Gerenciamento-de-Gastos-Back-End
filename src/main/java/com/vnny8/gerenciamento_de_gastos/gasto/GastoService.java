@@ -6,6 +6,7 @@ import com.vnny8.gerenciamento_de_gastos.exceptions.gastoExceptions.GastoNaoEnco
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoResponse;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.CriarGastoRequest;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.EditarGastoRequest;
+import com.vnny8.gerenciamento_de_gastos.gasto.dtos.ListarGastosPorDataRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,20 @@ public class GastoService {
         return retornaListaDTOs(gastos);
     }
 
+    public List<AcessarGastoResponse> listarGastosPorData(ListarGastosPorDataRequest dto) {
+        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(dto.login());
+    
+        // Converte mês para número
+        int mes = converterMesParaNumero(dto.mes());
+        int ano = Integer.parseInt(dto.ano());
+    
+        // Consulta os gastos filtrados pelo mês e ano
+        List<Gasto> gastos = gastoRepository.findByUsuarioAndData(usuario, mes, ano);
+    
+        // Retorna os DTOs
+        return retornaListaDTOs(gastos);
+    }
+
     public AcessarGastoResponse retornaDTOGasto(Gasto gasto){
         return new AcessarGastoResponse(gasto.getNome(), gasto.getValor(), gasto.getDataCadastro(), gasto.getCategoria().getNome());
     }
@@ -86,4 +101,22 @@ public class GastoService {
         return gastosDTO;
     }
 
+    private int converterMesParaNumero(String mes) {
+        return switch (mes.toLowerCase()) {
+            case "janeiro" -> 1;
+            case "fevereiro" -> 2;
+            case "março" -> 3;
+            case "abril" -> 4;
+            case "maio" -> 5;
+            case "junho" -> 6;
+            case "julho" -> 7;
+            case "agosto" -> 8;
+            case "setembro" -> 9;
+            case "outubro" -> 10;
+            case "novembro" -> 11;
+            case "dezembro" -> 12;
+            default -> throw new IllegalArgumentException("Mês inválido: " + mes);
+        };
+    }
+    
 }
