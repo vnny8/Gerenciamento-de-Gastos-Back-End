@@ -1,5 +1,7 @@
 package com.vnny8.gerenciamento_de_gastos.gasto.dtos;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotNull;
 
 public record CriarGastoRequest(
@@ -14,5 +16,8 @@ public record CriarGastoRequest(
         Float valor,
 
         @NotNull
-        Long idCategoria
+        Long idCategoria,
+
+        @NotNull
+        LocalDateTime dataCadastro
 ) {}

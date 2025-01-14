@@ -14,4 +14,6 @@ public interface GastoRepository extends JpaRepository<Gasto, Long> {
     @Query("SELECT g FROM Gasto g WHERE g.usuario = :usuario AND EXTRACT(MONTH FROM g.dataCadastro) = :mes AND EXTRACT(YEAR FROM g.dataCadastro) = :ano")
     List<Gasto> findByUsuarioAndData(@Param("usuario") Usuario usuario, @Param("mes") int mes, @Param("ano") int ano);
 
+    @Query("SELECT SUM(g.valor) FROM Gasto g WHERE g.usuario = :usuario AND EXTRACT(MONTH FROM g.dataCadastro) = :mes AND EXTRACT(YEAR FROM g.dataCadastro) = :ano")
+    Float findSomaGastosPorMesEAno(@Param("usuario") Usuario usuario, @Param("mes") int mes, @Param("ano") int ano);
 }

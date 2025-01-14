@@ -4,9 +4,11 @@ import com.vnny8.gerenciamento_de_gastos.categoria.Categoria;
 import com.vnny8.gerenciamento_de_gastos.categoria.CategoriaService;
 import com.vnny8.gerenciamento_de_gastos.exceptions.gastoExceptions.GastoNaoEncontrado;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoResponse;
+import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoSalarioMensalResponse;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.CriarGastoRequest;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.EditarGastoRequest;
-import com.vnny8.gerenciamento_de_gastos.gasto.dtos.ListarGastosPorDataRequest;
+import com.vnny8.gerenciamento_de_gastos.salario.Salario;
+import com.vnny8.gerenciamento_de_gastos.salario.SalarioRepository;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -21,16 +23,19 @@ public class GastoService {
     private final GastoRepository gastoRepository;
     private final CategoriaService categoriaService;
     private final UsuarioService usuarioService;
+    private final SalarioRepository salarioRepository;
 
     // Injeção por construtor
     public GastoService(
         GastoRepository gastoRepository,
         CategoriaService categoriaService,
-        UsuarioService usuarioService
+        UsuarioService usuarioService,
+        SalarioRepository salarioRepository
     ) {
         this.gastoRepository = gastoRepository;
         this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
+        this.salarioRepository = salarioRepository;
     }
 
     public void criar(@RequestBody CriarGastoRequest criarGastoRequest) {
@@ -40,6 +45,7 @@ public class GastoService {
         gasto.setUsuario(usuario);
         gasto.setNome(criarGastoRequest.nome());
         gasto.setValor(criarGastoRequest.valor());
+        gasto.setDataCadastro(criarGastoRequest.dataCadastro());
         Categoria categoria = categoriaService.acessarCategoria(criarGastoRequest.idCategoria());
         gasto.setCategoria(categoria);
         gastoRepository.save(gasto);
@@ -75,18 +81,22 @@ public class GastoService {
         return retornaListaDTOs(gastos);
     }
 
-    public List<AcessarGastoResponse> listarGastosPorData(ListarGastosPorDataRequest dto) {
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(dto.login());
+    public AcessarGastoSalarioMensalResponse listarGastosPorData(String mes, String ano, String login) {
+        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(login);
     
         // Converte mês para número
-        int mes = converterMesParaNumero(dto.mes());
-        int ano = Integer.parseInt(dto.ano());
-    
+        int mesInteiro = converterMesParaNumero(mes);
+        int anoInteiro = Integer.parseInt(ano);
+
+        // Consulta o último salário registrado no mês
+        List<Salario> salarios = salarioRepository.findUltimoSalarioDoMes(usuario, mesInteiro, anoInteiro);
+        Float ultimoSalarioDoMes = salarios.isEmpty() ? 0.0f : salarios.get(0).getValor();
+        
         // Consulta os gastos filtrados pelo mês e ano
-        List<Gasto> gastos = gastoRepository.findByUsuarioAndData(usuario, mes, ano);
-    
+        List<Gasto> gastos = gastoRepository.findByUsuarioAndData(usuario, mesInteiro, anoInteiro);
+        Float valorGastoNoMes = gastoRepository.findSomaGastosPorMesEAno(usuario, mesInteiro, anoInteiro);
         // Retorna os DTOs
-        return retornaListaDTOs(gastos);
+        return new AcessarGastoSalarioMensalResponse(ultimoSalarioDoMes, valorGastoNoMes, retornaListaDTOs(gastos));
     }
 
     public AcessarGastoResponse retornaDTOGasto(Gasto gasto){

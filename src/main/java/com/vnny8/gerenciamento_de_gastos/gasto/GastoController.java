@@ -2,11 +2,10 @@ package com.vnny8.gerenciamento_de_gastos.gasto;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoResponse;
+import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoSalarioMensalResponse;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.CriarGastoRequest;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.EditarGastoRequest;
-import com.vnny8.gerenciamento_de_gastos.gasto.dtos.ListarGastosPorDataRequest;
 
 import java.util.List;
 
@@ -48,8 +47,13 @@ public class GastoController {
     }
 
     @GetMapping("/listarPorData")
-    public ResponseEntity<List<AcessarGastoResponse>> listarGastosPorData(@RequestBody ListarGastosPorDataRequest dto){
-        return ResponseEntity.status(200).body(gastoService.listarGastosPorData(dto));
+    public ResponseEntity<AcessarGastoSalarioMensalResponse> listarGastosPorData(
+        @RequestParam String mes,
+        @RequestParam String ano,
+        @RequestParam String login
+    ) {
+        return ResponseEntity.status(200).body(gastoService.listarGastosPorData(mes, ano, login));
     }
+
 
 }

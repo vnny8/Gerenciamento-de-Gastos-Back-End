@@ -21,7 +21,7 @@ public class Gasto {
 
     private Float valor;
 
-    @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime dataCadastro;
 
     @ManyToOne
