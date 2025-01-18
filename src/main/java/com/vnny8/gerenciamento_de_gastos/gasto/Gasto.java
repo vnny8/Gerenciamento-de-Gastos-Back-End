@@ -4,7 +4,6 @@ import com.vnny8.gerenciamento_de_gastos.categoria.Categoria;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 

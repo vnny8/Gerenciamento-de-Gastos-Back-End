@@ -3,8 +3,6 @@ package com.vnny8.gerenciamento_de_gastos.salario;
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -14,12 +12,12 @@ public class Salario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Float valor;
 
-    private Boolean status;
+    private String mes;
 
-    @CreationTimestamp
-    private LocalDateTime dataCadastro;
+    private String ano;
 
     @ManyToOne
     private Usuario usuario;

@@ -89,7 +89,7 @@ public class GastoService {
         int anoInteiro = Integer.parseInt(ano);
 
         // Consulta o último salário registrado no mês
-        List<Salario> salarios = salarioRepository.findUltimoSalarioDoMes(usuario, mesInteiro, anoInteiro);
+        List<Salario> salarios = salarioRepository.findUltimoSalarioDoMes(usuario, mes, ano);
         Float ultimoSalarioDoMes = salarios.isEmpty() ? 0.0f : salarios.get(0).getValor();
         
         // Consulta os gastos filtrados pelo mês e ano
@@ -100,7 +100,7 @@ public class GastoService {
     }
 
     public AcessarGastoResponse retornaDTOGasto(Gasto gasto){
-        return new AcessarGastoResponse(gasto.getNome(), gasto.getValor(), gasto.getDataCadastro(), gasto.getCategoria().getNome());
+        return new AcessarGastoResponse(gasto.getId(), gasto.getNome(), gasto.getValor(), gasto.getDataCadastro(), gasto.getCategoria().getNome(), gasto.getCategoria().getCorCategoria());
     }
 
     public List<AcessarGastoResponse> retornaListaDTOs(List<Gasto> gastos){

@@ -8,6 +8,12 @@ public record CreateSalarioRequest (
         String loginUsuario,
 
         @NotNull
-        Float valor
+        Float valor,
+
+        @NotNull
+        String mes,
+
+        @NotNull
+        String ano
 
 ){}

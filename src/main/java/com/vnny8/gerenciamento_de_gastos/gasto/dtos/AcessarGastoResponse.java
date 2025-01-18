@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 public record AcessarGastoResponse(
 
         @NotNull
+        Long idGasto,
+        
+        @NotNull
         String nome,
 
         @NotNull
@@ -16,5 +19,8 @@ public record AcessarGastoResponse(
         LocalDateTime dataCadastro,
 
         @NotNull
-        String categoria
+        String categoria,
+
+        @NotNull
+        String corCategoria
 ){}

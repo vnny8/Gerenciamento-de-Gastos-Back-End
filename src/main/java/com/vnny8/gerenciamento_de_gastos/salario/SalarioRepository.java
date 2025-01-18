@@ -8,6 +8,6 @@ import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 
 public interface SalarioRepository extends JpaRepository<Salario, Long> {
 
-    @Query("SELECT s FROM Salario s WHERE s.usuario = :usuario AND MONTH(s.dataCadastro) = :mes AND YEAR(s.dataCadastro) = :ano ORDER BY s.dataCadastro DESC")
-    List<Salario> findUltimoSalarioDoMes(@Param("usuario") Usuario usuario, @Param("mes") int mes, @Param("ano") int ano);
+    @Query("SELECT s FROM Salario s WHERE s.usuario = :usuario AND s.mes = :mes AND s.ano = :ano ORDER BY s.id DESC")
+    List<Salario> findUltimoSalarioDoMes(@Param("usuario") Usuario usuario, @Param("mes") String mes, @Param("ano") String ano);
 }

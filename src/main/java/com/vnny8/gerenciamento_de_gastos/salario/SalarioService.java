@@ -8,8 +8,6 @@ import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class SalarioService {
 
@@ -27,11 +25,8 @@ public class SalarioService {
         Salario salario = new Salario();
         salario.setUsuario(usuario);
         salario.setValor(createSalarioRequest.valor());
-        salario.setStatus(true);
-        List<Salario> salarios = salarioRepository.findAll();
-        for (Salario salarioEditar : salarios){
-            salarioEditar.setStatus(false);
-        }
+        salario.setMes(createSalarioRequest.mes());
+        salario.setAno(createSalarioRequest.ano());
         salarioRepository.save(salario);
     }
 
@@ -43,7 +38,7 @@ public class SalarioService {
     public AcessarSalarioResponse acessarMostrar(Long id){
         Salario salario = acessar(id);
         return new AcessarSalarioResponse(salario.getValor(),
-                salario.getStatus(), salario.getDataCadastro(), salario.getUsuario().getId());
+                salario.getMes(), salario.getAno(), salario.getUsuario().getId());
     }
 
     public void deletar(Long id){
