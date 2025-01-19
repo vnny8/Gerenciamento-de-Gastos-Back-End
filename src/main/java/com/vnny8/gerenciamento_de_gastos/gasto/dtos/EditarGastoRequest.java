@@ -14,5 +14,5 @@ public record EditarGastoRequest(
         Float valor,
 
         @NotNull
-        Long id_categoria
+        Long idCategoria
 ) {}

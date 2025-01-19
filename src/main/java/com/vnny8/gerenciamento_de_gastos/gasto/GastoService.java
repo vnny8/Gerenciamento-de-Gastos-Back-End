@@ -65,7 +65,7 @@ public class GastoService {
         Gasto gasto = acessar(editarGastoRequest.id());
         gasto.setNome(editarGastoRequest.nome());
         gasto.setValor(editarGastoRequest.valor());
-        Categoria categoria = categoriaService.acessarCategoria(editarGastoRequest.id_categoria());
+        Categoria categoria = categoriaService.acessarCategoria(editarGastoRequest.idCategoria());
         gasto.setCategoria(categoria);
         gastoRepository.save(gasto);
     }
@@ -100,7 +100,7 @@ public class GastoService {
     }
 
     public AcessarGastoResponse retornaDTOGasto(Gasto gasto){
-        return new AcessarGastoResponse(gasto.getId(), gasto.getNome(), gasto.getValor(), gasto.getDataCadastro(), gasto.getCategoria().getNome(), gasto.getCategoria().getCorCategoria());
+        return new AcessarGastoResponse(gasto.getId(), gasto.getNome(), gasto.getValor(), gasto.getDataCadastro(), gasto.getCategoria().getId(), gasto.getCategoria().getNome(), gasto.getCategoria().getCorCategoria());
     }
 
     public List<AcessarGastoResponse> retornaListaDTOs(List<Gasto> gastos){
