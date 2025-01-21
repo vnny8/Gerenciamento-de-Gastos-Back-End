@@ -1,5 +1,7 @@
 package com.vnny8.gerenciamento_de_gastos.usuario;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.CriarUsuarioComumRequest;
@@ -21,9 +23,20 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<UsuarioResponse> encontrarPorID(@RequestParam("login") String login){
+    public ResponseEntity<UsuarioResponse> encontrarPorLogin(@RequestParam("login") String login){
         return ResponseEntity.status(200).body(usuarioService.encontrarPorLogin(login));
     }
+
+    @GetMapping("/encontrarUsuarioPorId")
+    public ResponseEntity<Usuario> encontrarPorID(@RequestParam("id") Long id){
+        return ResponseEntity.status(200).body(usuarioService.encontrarUsuarioPorId(id));
+    }
+
+    @GetMapping("/listarTodos")
+    public ResponseEntity<List<Usuario>> listarTodos(){
+        return ResponseEntity.status(200).body(usuarioService.listarTodos());
+    }
+
 
     @DeleteMapping("/apagar")
     public ResponseEntity<Void> deletarPorID(@RequestParam("id") Long id){

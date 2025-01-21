@@ -7,6 +7,7 @@ import com.vnny8.gerenciamento_de_gastos.usuario.dtos.UsuarioResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,7 +37,7 @@ public class UsuarioService {
     }
 
     public UsuarioResponse encontrarPorLogin(String login) {
-        return usuarioParaDTOResponse(encontrarUsuarioComumPorLogin(login));
+        return usuarioParaDTOResponse(encontrarUsuarioPorLogin(login));
     }
 
     public void deletarPorId(Long id){
@@ -49,19 +50,18 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNaoEncontrado("Usuário com ID " + id + " não encontrado."));
     }
 
-    public UsuarioResponse usuarioParaDTOResponse(UsuarioComum usuario){
+    public List<Usuario> listarTodos(){
+        return usuarioRepository.findAll();
+    }
+
+    public UsuarioResponse usuarioParaDTOResponse(Usuario usuario){
         return new UsuarioResponse(
                 usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getLogin()
         );
     }
 
     public Usuario encontrarUsuarioPorLogin(String login){
-        return usuarioComumRepository.findByLogin(login)
-                .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o Login " + login));
-    }
-
-    public UsuarioComum encontrarUsuarioComumPorLogin(String login){
-        return usuarioComumRepository.findByLogin(login)
+        return usuarioRepository.findByLogin(login)
                 .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o Login " + login));
     }
 

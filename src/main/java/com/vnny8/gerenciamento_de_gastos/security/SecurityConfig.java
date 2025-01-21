@@ -64,6 +64,7 @@ public class SecurityConfig {
                                 .oidcUserService(customOidcUserService)
                         )
                         .successHandler(customAuthenticationSuccessHandler)
+                        .defaultSuccessUrl("/loginGoogleApi")
                 )
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 ->

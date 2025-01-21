@@ -39,6 +39,7 @@ public class CustomOidcUserService extends OidcUserService {
             Usuario novoUsuario = new Usuario();
             novoUsuario.setEmail(email);
             novoUsuario.setNome(nome);
+            novoUsuario.setLogin(email);
 
             // Define a role com base no email
             if (email.equals(adminEmail)) {

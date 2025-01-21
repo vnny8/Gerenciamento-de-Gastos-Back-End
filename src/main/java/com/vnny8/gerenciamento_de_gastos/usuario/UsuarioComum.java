@@ -15,8 +15,6 @@ import lombok.EqualsAndHashCode;
 public class UsuarioComum extends Usuario implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    @Column(nullable = false, unique = true, length = 30)
-    private String login;
 
     @Column(nullable = false)
     private String senha;
