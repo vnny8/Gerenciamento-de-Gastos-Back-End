@@ -41,8 +41,8 @@ public class CategoriaController {
     }
 
     @GetMapping("/listarPorUsuario")
-    public ResponseEntity<List<CategoriaResponse>> listarPorUsuario(@RequestParam("login") String login) {
-        return ResponseEntity.status(200).body(categoriaService.listar(login));
+    public ResponseEntity<List<CategoriaResponse>> listarPorUsuario(@RequestParam("email") String email) {
+        return ResponseEntity.status(200).body(categoriaService.listar(email));
     }
 
 }

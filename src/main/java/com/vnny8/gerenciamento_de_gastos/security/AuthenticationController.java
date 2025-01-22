@@ -1,8 +1,6 @@
 package com.vnny8.gerenciamento_de_gastos.security;
 
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
-import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioComum;
-import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioComumRepository;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioRepository;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
 
@@ -50,14 +48,12 @@ public class AuthenticationController {
 
     @GetMapping("/loginGoogle")
     public String loginGoogle(@AuthenticationPrincipal OidcUser principal) {
-        System.out.println("Aqui?");
         // Verifica se o usuário já existe no banco de dados pelo email
         String emailCriar = principal.getAttribute("email");
         if (!usuarioRepository.findByEmail(emailCriar).isPresent()) {
             Usuario usuario = new Usuario();
             usuario.setNome(principal.getAttribute("name"));
             usuario.setEmail(emailCriar);
-            usuario.setLogin(emailCriar);
 
             // Verifica se o email é de um administrador
             if (usuario.getEmail().equals(emailAdmin)) {
@@ -84,7 +80,7 @@ public class AuthenticationController {
     public void loginGoogle(@AuthenticationPrincipal OidcUser principal, HttpServletResponse response) throws IOException {
         String email = principal.getAttribute("email");
 
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(email);
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(email);
 
         // Gera o token JWT
         String token = jwtService.generateToken(

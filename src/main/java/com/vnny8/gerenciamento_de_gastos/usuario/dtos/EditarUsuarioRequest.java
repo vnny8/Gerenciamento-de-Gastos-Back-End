@@ -12,8 +12,5 @@ public record EditarUsuarioRequest(
         String nome,
 
         @Nullable
-        String login,
-
-        @Nullable
         String email
 ) {}

@@ -26,7 +26,7 @@ public class CategoriaService {
         Categoria categoria = new Categoria();
         categoria.setNome(dto.nome());
         categoria.setCorCategoria(dto.cor_categoria());
-        Usuario usuarioComum = usuarioService.encontrarUsuarioPorLogin(dto.loginUsuario());
+        Usuario usuarioComum = usuarioService.encontrarUsuarioPorEmail(dto.emailUsuario());
         categoria.setUsuario(usuarioComum);
         return transformaClasseParaDTOResponse(categoriaRepository.save(categoria));
     }
@@ -47,8 +47,8 @@ public class CategoriaService {
         categoriaRepository.save(categoria);
     }
 
-    public List<CategoriaResponse> listar(String login){
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(login);
+    public List<CategoriaResponse> listar(String email){
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(email);
         return categoriaRepository.findCategoriasByUsuario(usuario).stream()
                 .map(this::transformaClasseParaDTOResponse)
                 .toList();

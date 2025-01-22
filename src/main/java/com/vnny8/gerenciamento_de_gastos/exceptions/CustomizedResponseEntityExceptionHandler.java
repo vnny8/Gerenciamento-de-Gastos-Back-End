@@ -1,6 +1,8 @@
 package com.vnny8.gerenciamento_de_gastos.exceptions;
 
 import com.vnny8.gerenciamento_de_gastos.exceptions.usuarioExceptions.UsuarioNaoEncontrado;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +15,11 @@ import java.util.Date;
 @RestController
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Não é possível deletar o recurso porque ele está associado a outros dados.");
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {

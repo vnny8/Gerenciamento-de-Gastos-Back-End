@@ -23,8 +23,8 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<UsuarioResponse> encontrarPorLogin(@RequestParam("login") String login){
-        return ResponseEntity.status(200).body(usuarioService.encontrarPorLogin(login));
+    public ResponseEntity<UsuarioResponse> encontrarPorEmail(@RequestParam("email") String email){
+        return ResponseEntity.status(200).body(usuarioService.encontrarPorEmail(email));
     }
 
     @GetMapping("/encontrarUsuarioPorId")

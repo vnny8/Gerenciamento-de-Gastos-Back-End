@@ -21,7 +21,7 @@ public class SalarioService {
     }
 
     public void criar(CreateSalarioRequest createSalarioRequest) {
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(createSalarioRequest.loginUsuario());
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(createSalarioRequest.emailUsuario());
         Salario salario = new Salario();
         salario.setUsuario(usuario);
         salario.setValor(createSalarioRequest.valor());

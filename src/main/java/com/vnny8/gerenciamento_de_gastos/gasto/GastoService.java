@@ -40,7 +40,7 @@ public class GastoService {
 
     public void criar(@RequestBody CriarGastoRequest criarGastoRequest) {
         Gasto gasto = new Gasto();
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(criarGastoRequest.loginUsuario());
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(criarGastoRequest.emailUsuario());
 
         gasto.setUsuario(usuario);
         gasto.setNome(criarGastoRequest.nome());
@@ -65,6 +65,7 @@ public class GastoService {
         Gasto gasto = acessar(editarGastoRequest.id());
         gasto.setNome(editarGastoRequest.nome());
         gasto.setValor(editarGastoRequest.valor());
+        gasto.setDataCadastro(editarGastoRequest.data());
         Categoria categoria = categoriaService.acessarCategoria(editarGastoRequest.idCategoria());
         gasto.setCategoria(categoria);
         gastoRepository.save(gasto);
@@ -75,14 +76,14 @@ public class GastoService {
         return retornaDTOGasto(gasto);
     }
 
-    public List<AcessarGastoResponse> listarGastos(String login){
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(login);
+    public List<AcessarGastoResponse> listarGastos(String email){
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(email);
         List<Gasto> gastos = gastoRepository.findByUsuario(usuario);
         return retornaListaDTOs(gastos);
     }
 
-    public AcessarGastoSalarioMensalResponse listarGastosPorData(String mes, String ano, String login) {
-        Usuario usuario = usuarioService.encontrarUsuarioPorLogin(login);
+    public AcessarGastoSalarioMensalResponse listarGastosPorData(String mes, String ano, String email) {
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(email);
     
         // Converte mês para número
         int mesInteiro = converterMesParaNumero(mes);

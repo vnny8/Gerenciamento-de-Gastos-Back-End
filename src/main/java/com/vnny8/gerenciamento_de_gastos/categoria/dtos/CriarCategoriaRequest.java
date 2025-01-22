@@ -10,5 +10,5 @@ public record CriarCategoriaRequest (
         @Size(min = 1, max = 30)
         String cor_categoria,
 
-        String loginUsuario
+        String emailUsuario
 ){}

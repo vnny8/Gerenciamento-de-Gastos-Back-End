@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 public record CreateSalarioRequest (
 
         @NotNull
-        String loginUsuario,
+        String emailUsuario,
 
         @NotNull
         Float valor,

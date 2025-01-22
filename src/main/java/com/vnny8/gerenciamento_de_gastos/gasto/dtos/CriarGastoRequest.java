@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public record CriarGastoRequest(
 
         @NotNull
-        String loginUsuario,
+        String emailUsuario,
 
         @NotNull
         String nome,
@@ -16,8 +16,8 @@ public record CriarGastoRequest(
         Float valor,
 
         @NotNull
-        Long idCategoria,
+        LocalDateTime dataCadastro,
 
         @NotNull
-        LocalDateTime dataCadastro
+        Long idCategoria
 ) {}

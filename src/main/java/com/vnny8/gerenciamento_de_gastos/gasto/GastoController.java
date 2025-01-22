@@ -1,5 +1,6 @@
 package com.vnny8.gerenciamento_de_gastos.gasto;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.vnny8.gerenciamento_de_gastos.gasto.dtos.AcessarGastoResponse;
@@ -26,8 +27,14 @@ public class GastoController {
 
     @DeleteMapping("/deletar")
     public ResponseEntity<Void> deletar(@RequestParam("id") Long id){
-        gastoService.deletar(id);
-        return ResponseEntity.status(204).body(null);
+        try {
+            gastoService.deletar(id);
+            return ResponseEntity.status(204).body(null);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(409).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @PutMapping("/editar")
@@ -42,17 +49,17 @@ public class GastoController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<AcessarGastoResponse>> listar(@RequestParam("login") String login){
-        return ResponseEntity.status(200).body(gastoService.listarGastos(login));
+    public ResponseEntity<List<AcessarGastoResponse>> listar(@RequestParam("email") String email){
+        return ResponseEntity.status(200).body(gastoService.listarGastos(email));
     }
 
     @GetMapping("/listarPorData")
     public ResponseEntity<AcessarGastoSalarioMensalResponse> listarGastosPorData(
         @RequestParam String mes,
         @RequestParam String ano,
-        @RequestParam String login
+        @RequestParam String email
     ) {
-        return ResponseEntity.status(200).body(gastoService.listarGastosPorData(mes, ano, login));
+        return ResponseEntity.status(200).body(gastoService.listarGastosPorData(mes, ano, email));
     }
 
 

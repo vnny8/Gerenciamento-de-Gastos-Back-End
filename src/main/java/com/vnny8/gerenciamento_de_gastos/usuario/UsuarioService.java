@@ -28,7 +28,6 @@ public class UsuarioService {
         UsuarioComum usuarioComum = new UsuarioComum();
         usuarioComum.setNome(usuario.nome());
         usuarioComum.setEmail(usuario.email());
-        usuarioComum.setLogin(usuario.login());
         usuarioComum.setRole("ROLE_USER");
         String senhaCriptografada = passwordEncoder.encode(usuario.senha());
         usuarioComum.setSenha(senhaCriptografada);
@@ -36,8 +35,8 @@ public class UsuarioService {
         return usuarioParaDTOResponse(usuarioComum);
     }
 
-    public UsuarioResponse encontrarPorLogin(String login) {
-        return usuarioParaDTOResponse(encontrarUsuarioPorLogin(login));
+    public UsuarioResponse encontrarPorEmail(String email) {
+        return usuarioParaDTOResponse(encontrarUsuarioPorEmail(email));
     }
 
     public void deletarPorId(Long id){
@@ -56,13 +55,13 @@ public class UsuarioService {
 
     public UsuarioResponse usuarioParaDTOResponse(Usuario usuario){
         return new UsuarioResponse(
-                usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getLogin()
+                usuario.getId(), usuario.getNome(), usuario.getEmail()
         );
     }
 
-    public Usuario encontrarUsuarioPorLogin(String login){
-        return usuarioRepository.findByLogin(login)
-                .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o Login " + login));
+    public Usuario encontrarUsuarioPorEmail(String email){
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o email " + email));
     }
 
     public void editar(EditarUsuarioRequest usuarioEditar) {
@@ -71,7 +70,6 @@ public class UsuarioService {
             UsuarioComum usuarioComum = usuarioComumOptional.get();
             usuarioComum.setNome(usuarioEditar.nome());
             usuarioComum.setEmail(usuarioEditar.email());
-            usuarioComum.setLogin(usuarioEditar.login());
             usuarioComumRepository.save(usuarioComum);
         } else {
             Usuario usuario = encontrarUsuarioPorId(usuarioEditar.id());

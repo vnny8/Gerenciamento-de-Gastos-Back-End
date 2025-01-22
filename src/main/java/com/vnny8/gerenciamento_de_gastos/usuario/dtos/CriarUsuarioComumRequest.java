@@ -8,9 +8,6 @@ public record CriarUsuarioComumRequest(
         String nome,
 
         @NotNull
-        String login,
-
-        @NotNull
         String senha,
 
         @NotNull
