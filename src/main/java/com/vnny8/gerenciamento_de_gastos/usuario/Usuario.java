@@ -26,6 +26,9 @@ public class Usuario {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false)
+    private Boolean ativo = false; // Por padrão, o usuário não está ativo
+
     // Não queremos serializar as categorias na resposta JSON
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

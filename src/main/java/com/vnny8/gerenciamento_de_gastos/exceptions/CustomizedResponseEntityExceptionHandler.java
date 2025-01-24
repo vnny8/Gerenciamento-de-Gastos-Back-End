@@ -18,7 +18,7 @@ public class CustomizedResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Não é possível deletar o recurso porque ele está associado a outros dados.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito com dados existentes.");
     }
 
     @ExceptionHandler(Exception.class)

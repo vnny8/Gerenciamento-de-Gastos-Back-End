@@ -18,6 +18,8 @@ public class GerenciamentoDeGastosApplication {
 		System.setProperty("GOOGLE_CLIENT_ID", dotenv.get("GOOGLE_CLIENT_ID"));
 		System.setProperty("GOOGLE_CLIENT_SECRET", dotenv.get("GOOGLE_CLIENT_SECRET"));
 		System.setProperty("ADMIN_EMAIL", dotenv.get("ADMIN_EMAIL"));
+		System.setProperty("EMAIL_COMUNICACAO", dotenv.get("EMAIL_COMUNICACAO"));
+		System.setProperty("SENHA_EMAIL_COMUNICACAO", dotenv.get("SENHA_EMAIL_COMUNICACAO"));
 		SpringApplication.run(GerenciamentoDeGastosApplication.class, args);
 	}
 

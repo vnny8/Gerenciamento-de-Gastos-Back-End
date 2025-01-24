@@ -2,8 +2,11 @@ package com.vnny8.gerenciamento_de_gastos.usuario;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.CriarUsuarioComumRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.EditarUsuarioRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.UsuarioResponse;
@@ -50,4 +53,17 @@ public class UsuarioController {
         return ResponseEntity.status(204).body(null);
     }
 
+    @PostMapping("/confirmarConta")
+    public ResponseEntity<String> confirmarConta(@RequestParam("codigo") String codigo) {
+        try{
+            usuarioService.confirmarConta(codigo);
+            return ResponseEntity.ok("Conta ativada com sucesso!");
+        } catch (ResponseStatusException ex) {
+            // Retorna o status específico do erro com a mensagem apropriada
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        } catch (Exception ex) {
+            // Retorna um status genérico 500 para outros erros
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao confirmar conta.");
+        }
+    }
 }
