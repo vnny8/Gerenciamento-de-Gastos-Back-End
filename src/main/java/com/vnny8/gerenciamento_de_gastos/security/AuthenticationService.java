@@ -2,12 +2,9 @@ package com.vnny8.gerenciamento_de_gastos.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.vnny8.gerenciamento_de_gastos.usuario.Usuario;
-import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioRepository;
 import com.vnny8.gerenciamento_de_gastos.usuario.UsuarioService;
 
 @Service

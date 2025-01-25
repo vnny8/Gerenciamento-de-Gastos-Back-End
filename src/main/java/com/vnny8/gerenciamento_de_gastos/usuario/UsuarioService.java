@@ -3,6 +3,7 @@ package com.vnny8.gerenciamento_de_gastos.usuario;
 import com.vnny8.gerenciamento_de_gastos.confirmacaoUsuario.ConfirmacaoUsuario;
 import com.vnny8.gerenciamento_de_gastos.confirmacaoUsuario.ConfirmacaoUsuarioRepository;
 import com.vnny8.gerenciamento_de_gastos.exceptions.usuarioExceptions.UsuarioNaoEncontrado;
+import com.vnny8.gerenciamento_de_gastos.usuario.dtos.AlterarSenhaRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.CriarUsuarioComumRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.EditarUsuarioRequest;
 import com.vnny8.gerenciamento_de_gastos.usuario.dtos.UsuarioResponse;
@@ -52,8 +53,7 @@ public class UsuarioService {
         ConfirmacaoUsuario confirmacaoUsuario = new ConfirmacaoUsuario();
         String codigo = String.format("%06d", random.nextInt(999999));
         confirmacaoUsuario.setCodigo(codigo);
-        confirmacaoUsuario.setCreatedAt(LocalDateTime.now());
-        confirmacaoUsuario.setExpiresAt(LocalDateTime.now().plusMinutes(15)); // Expira em 15 minutos
+        confirmacaoUsuario.setCriadoEm(LocalDateTime.now());
         confirmacaoUsuario.setUsuario(usuarioComum);
 
         confirmacaoUsuarioRepository.save(confirmacaoUsuario);
@@ -90,6 +90,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o email " + email));
     }
 
+    public UsuarioComum encontrarUsuarioComum(String email){
+        return usuarioComumRepository.findByEmail(email)
+        .orElseThrow(() -> new UsuarioNaoEncontrado("Não existe usuário com o email " + email));
+    }
+
     public void editar(EditarUsuarioRequest usuarioEditar) {
         Optional<UsuarioComum> usuarioComumOptional = usuarioComumRepository.findById(usuarioEditar.id());
         if (usuarioComumOptional.isPresent()) {
@@ -104,8 +109,8 @@ public class UsuarioService {
         }
     }
 
-    public void confirmarConta(String codigo) {
-        Optional<ConfirmacaoUsuario> optionalCodigo = confirmacaoUsuarioRepository.findByCodigo(codigo);
+    public void confirmarConta(String codigo, String email) {
+        Optional<ConfirmacaoUsuario> optionalCodigo = confirmacaoUsuarioRepository.findByCodigoAndEmail(codigo, email);
 
         if (optionalCodigo.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Código inválido!");
@@ -113,16 +118,12 @@ public class UsuarioService {
 
         ConfirmacaoUsuario codigoConfirmacao = optionalCodigo.get();
 
-        if (codigoConfirmacao.getConfirmedAt() != null) {
+        if (codigoConfirmacao.getConfirmouEm() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Código já confirmado!");
         }
 
-        if (codigoConfirmacao.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new ResponseStatusException(HttpStatus.GONE, "Código expirado!");
-        }
-
         // Atualizar o token como confirmado
-        codigoConfirmacao.setConfirmedAt(LocalDateTime.now());
+        codigoConfirmacao.setConfirmouEm(LocalDateTime.now());
         confirmacaoUsuarioRepository.save(codigoConfirmacao);
 
         // Ativar o usuário associado ao token
@@ -131,11 +132,59 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public void solicitarRecuperacaoSenha(String email) {
+        Usuario usuario = encontrarUsuarioPorEmail(email);
+
+        // Gerar código de 6 dígitos
+        String codigo = String.format("%06d", random.nextInt(999999));
+
+        // Criar token de recuperação
+        ConfirmacaoUsuario confirmacaoUsuario = new ConfirmacaoUsuario();
+        confirmacaoUsuario.setCodigo(codigo);
+        confirmacaoUsuario.setUsuario(usuario);
+        confirmacaoUsuario.setCriadoEm(LocalDateTime.now());
+        confirmacaoUsuarioRepository.save(confirmacaoUsuario);
+
+        // Enviar e-mail
+        enviarEmailRecuperacao(usuario, codigo);
+    }
+
+    public void alterarSenha(AlterarSenhaRequest alterarSenhaRequest) {
+        // Encontrar o token
+        ConfirmacaoUsuario confirmacaoUsuario = confirmacaoUsuarioRepository.findByCodigoAndEmail(alterarSenhaRequest.codigo(), alterarSenhaRequest.emailUsuario())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Código inválido."));
+
+        if (confirmacaoUsuario.getConfirmouEm() != null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Código já utilizado!");
+        }
+
+        if (confirmacaoUsuario.getCriadoEm().plusMinutes(15).isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.GONE, "O código expirou.");
+        }
+
+        // Atualizar senha do usuário
+        UsuarioComum usuario = encontrarUsuarioComum(alterarSenhaRequest.emailUsuario());
+        String senhaCriptografada = passwordEncoder.encode(alterarSenhaRequest.novaSenha());
+        usuario.setSenha(senhaCriptografada);
+        usuarioComumRepository.save(usuario);
+
+        // Marcar token como usado
+        confirmacaoUsuario.setConfirmouEm(LocalDateTime.now());
+        confirmacaoUsuarioRepository.save(confirmacaoUsuario);
+    }
+
     private void enviarEmailDeConfirmacao(Usuario usuario, String codigo) {
         String mensagem = "<p>Olá, " + usuario.getNome().split(" ")[0] + "!</p>" +
                           "<p>Obrigado por se registrar. Por favor, aqui está o código para ativar sua conta:</p>" +
                           "<h3>" + codigo + "</h3>";
         emailService.enviar(usuario.getEmail(), "Confirmação de Cadastro", mensagem);
+    }
+
+    private void enviarEmailRecuperacao(Usuario usuario, String codigo) {
+        String mensagem = "<p>Olá, " + usuario.getNome() + "!</p>" +
+                "<p>Você solicitou a recuperação da senha. Use o código abaixo para redefinir sua senha:</p>" +
+                "<h3>" + codigo + "</h3>";
+        emailService.enviar(usuario.getEmail(), "Recuperação de Senha", mensagem);
     }
 
 

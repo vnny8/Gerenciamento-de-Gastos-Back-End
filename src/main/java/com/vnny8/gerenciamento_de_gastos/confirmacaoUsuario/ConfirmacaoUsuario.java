@@ -25,12 +25,10 @@ public class ConfirmacaoUsuario {
     private String codigo; // Código de 6 dígitos
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime criadoEm;
 
-    @Column(nullable = false)
-    private LocalDateTime expiresAt;
-
-    private LocalDateTime confirmedAt;
+    @Column
+    private LocalDateTime confirmouEm;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "user_id")

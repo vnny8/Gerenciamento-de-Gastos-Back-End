@@ -75,7 +75,7 @@ public class AuthenticationController {
             // Salva o usuário no banco de dados
             usuarioRepository.save(usuario);
         }
-        Usuario usuario = usuarioRepository.findByEmail(emailCriar).get();
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(emailCriar);
 
         // Após salvar ou verificar, gere o token JWT
         Authentication authentication = new UsernamePasswordAuthenticationToken(

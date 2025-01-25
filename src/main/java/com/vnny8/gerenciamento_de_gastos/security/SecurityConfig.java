@@ -55,6 +55,8 @@ public class SecurityConfig {
                             authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario").hasRole("USER");
                             authorizeConfig.requestMatchers(HttpMethod.DELETE, "/usuario/apagar").hasRole("ADMIN");
                             authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/confirmarConta").permitAll();
+                            authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/esqueciSenha").permitAll();
+                            authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/alterarSenha").permitAll();
                             authorizeConfig.requestMatchers("/authenticate").permitAll();
                             authorizeConfig.requestMatchers("/jwt/**").permitAll();
                             authorizeConfig.anyRequest().authenticated();
