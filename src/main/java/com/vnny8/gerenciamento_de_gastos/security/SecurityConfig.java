@@ -40,15 +40,21 @@ public class SecurityConfig {
 
     private final CustomOidcUserService customOidcUserService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-     private final RateLimiterFilter rateLimiterFilter;
+    private final RateLimiterFilter rateLimiterFilter;
+    private final ApiKeyFilter apiKeyFilter;
 
     public SecurityConfig(CustomOidcUserService customOidcUserService,
     CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-    RateLimiterFilter rateLimiterFilter){
+    RateLimiterFilter rateLimiterFilter,
+    ApiKeyFilter apiKeyFilter){
         this.customOidcUserService = customOidcUserService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.rateLimiterFilter = rateLimiterFilter;
+        this.apiKeyFilter = apiKeyFilter;
     }
+
+    private static final String ROLE_ADMIN = "ADMIN";
+    private static final String ROLE_USER = "USER";
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, DelegatingJwtDecoder delegatingJwtDecoder) throws Exception {
@@ -57,11 +63,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeConfig -> {
                             authorizeConfig.requestMatchers("/usuario/criar").permitAll();
-                            authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario").hasRole("USER");
-                            authorizeConfig.requestMatchers(HttpMethod.DELETE, "/usuario/apagar").hasRole("ADMIN");
+                            authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario").hasRole(ROLE_USER);
+                            authorizeConfig.requestMatchers(HttpMethod.DELETE, "/usuario/apagar").hasRole(ROLE_ADMIN);
+                            authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario/listarTodos").hasRole(ROLE_ADMIN);
+                            authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario/encontrarUsuarioPorId").hasRole(ROLE_ADMIN);
+                            authorizeConfig.requestMatchers(HttpMethod.GET, "/usuario/encontrarPorEmail").hasRole(ROLE_ADMIN);
                             authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/confirmarConta").permitAll();
                             authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/esqueciSenha").permitAll();
                             authorizeConfig.requestMatchers(HttpMethod.POST, "/usuario/alterarSenha").permitAll();
+                            authorizeConfig.requestMatchers("/loginGoogleApi").permitAll();
                             authorizeConfig.requestMatchers("/authenticate").permitAll();
                             authorizeConfig.requestMatchers("/jwt/**").permitAll();
                             authorizeConfig.anyRequest().authenticated();
@@ -81,7 +91,8 @@ public class SecurityConfig {
                                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter());
                                 })
                                 ) // Usa o decoder dinâmico
-                .addFilterBefore(rateLimiterFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(apiKeyFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(rateLimiterFilter, apiKeyFilter.getClass())
                                 .build();
     }
 

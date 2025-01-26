@@ -26,7 +26,7 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(usuarioService.criar(usuario));
     }
 
-    @GetMapping
+    @GetMapping("/encontrarPorEmail")
     public ResponseEntity<UsuarioResponse> encontrarPorEmail(@RequestParam("email") String email){
         return ResponseEntity.status(200).body(usuarioService.encontrarPorEmail(email));
     }
