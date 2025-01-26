@@ -3,6 +3,8 @@ package com.vnny8.gerenciamento_de_gastos.security;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.vnny8.gerenciamento_de_gastos.rateLimiter.RateLimiterFilter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,11 +40,14 @@ public class SecurityConfig {
 
     private final CustomOidcUserService customOidcUserService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+     private final RateLimiterFilter rateLimiterFilter;
 
     public SecurityConfig(CustomOidcUserService customOidcUserService,
-    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler){
+    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+    RateLimiterFilter rateLimiterFilter){
         this.customOidcUserService = customOidcUserService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.rateLimiterFilter = rateLimiterFilter;
     }
 
     @Bean
@@ -74,8 +79,10 @@ public class SecurityConfig {
                         oauth2.jwt(jwtConfigurer -> {
                                     jwtConfigurer.decoder(delegatingJwtDecoder);
                                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter());
-                                })) // Usa o decoder dinâmico
-                .build();
+                                })
+                                ) // Usa o decoder dinâmico
+                .addFilterBefore(rateLimiterFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+                                .build();
     }
 
     @Bean
