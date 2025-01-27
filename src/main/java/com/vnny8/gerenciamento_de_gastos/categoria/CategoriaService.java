@@ -26,8 +26,8 @@ public class CategoriaService {
         Categoria categoria = new Categoria();
         categoria.setNome(dto.nome());
         categoria.setCorCategoria(dto.cor_categoria());
-        Usuario usuarioComum = usuarioService.encontrarUsuarioPorEmail(dto.emailUsuario());
-        categoria.setUsuario(usuarioComum);
+        Usuario usuario = usuarioService.encontrarUsuarioPorEmail(dto.emailUsuario());
+        categoria.setUsuario(usuario);
         return transformaClasseParaDTOResponse(categoriaRepository.save(categoria));
     }
 
