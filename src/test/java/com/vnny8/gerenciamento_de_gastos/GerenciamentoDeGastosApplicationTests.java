@@ -8,6 +8,7 @@ class GerenciamentoDeGastosApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Verifica o contexto
 	}
 
 }
