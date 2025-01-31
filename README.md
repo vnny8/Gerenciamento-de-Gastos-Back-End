@@ -74,42 +74,43 @@ Este documento descreve os requisitos para o desenvolvimento de um software para
 ## 🌐 Endpoints Principais
 
 ### 🔹 **Categorias**
-```
-POST /categoria/criar - Cria uma nova categoria
-GET  /categoria/acessar - Retorna uma categoria específica
-PUT  /categoria/editar - Edita uma categoria
-DELETE /categoria/deletar - Deleta uma categoria
-```
+| Método  | Endpoint                | Descrição                     |
+|---------|-------------------------|--------------------------------|
+| `POST`  | `/categoria/criar`      | Cria uma nova categoria       |
+| `GET`   | `/categoria/acessar`    | Retorna uma categoria específica |
+| `PUT`   | `/categoria/editar`     | Edita uma categoria           |
+| `DELETE`| `/categoria/deletar`    | Deleta uma categoria          |
 
 ### 🔹 **Gastos**
-```
-POST /gasto/criar - Registra um novo gasto
-GET  /gasto/acessar - Retorna um gasto específico
-GET  /gasto/listar - Lista gastos do usuário
-GET  /gasto/listarPorData - Lista gastos por data
-```
+| Método  | Endpoint                | Descrição                      |
+|---------|-------------------------|---------------------------------|
+| `POST`  | `/gasto/criar`          | Registra um novo gasto         |
+| `GET`   | `/gasto/acessar`        | Retorna um gasto específico    |
+| `GET`   | `/gasto/listar`         | Lista gastos do usuário        |
+| `GET`   | `/gasto/listarPorData`  | Lista gastos por data          |
 
 ### 🔹 **Salários**
-```
-POST /salario/criar - Adiciona um salário
-GET  /salario/acessar - Retorna um salário específico
-PUT  /salario/editar - Edita um salário
-DELETE /salario/deletar - Deleta um salário
-```
+| Método  | Endpoint                | Descrição                      |
+|---------|-------------------------|---------------------------------|
+| `POST`  | `/salario/criar`        | Adiciona um salário            |
+| `GET`   | `/salario/acessar`      | Retorna um salário específico  |
+| `PUT`   | `/salario/editar`       | Edita um salário               |
+| `DELETE`| `/salario/deletar`      | Deleta um salário              |
 
 ### 🔹 **Usuários**
-```
-POST /usuario/criar - Cria um novo usuário
-POST /usuario/confirmarConta - Confirmação via e-mail
-POST /usuario/esqueciSenha - Inicia recuperação de senha
-POST /usuario/alterarSenha - Altera a senha
-```
+| Método  | Endpoint                 | Descrição                      |
+|---------|--------------------------|---------------------------------|
+| `POST`  | `/usuario/criar`         | Cria um novo usuário           |
+| `POST`  | `/usuario/confirmarConta`| Confirmação via e-mail         |
+| `POST`  | `/usuario/esqueciSenha`  | Inicia recuperação de senha    |
+| `POST`  | `/usuario/alterarSenha`  | Altera a senha                 |
+
 
 ---
 
 ## 📜 Tecnologias Utilizadas
 
-- **Back-End:** Java com Spring Boot.
+- **Back-End:** Java com Framework Spring Boot.
 - **Banco de Dados:** PostgreSQL.
 - **Segurança:**
   - OAuth 2.0 com Google.
@@ -123,4 +124,4 @@ Este projeto é de código aberto e pode ser utilizado conforme necessário.
 
 ---
 
-📌 Criado com ❤️ por [vnny8](https://github.com/vnny8)
+📌 Criado por [vnny8](https://github.com/vnny8)
