@@ -79,6 +79,12 @@ Este documento descreve os requisitos para o desenvolvimento de um software para
   - Uso de **JWT** e **OAuth2** para autenticação.
   - **Senhas devem ser armazenadas criptografadas** utilizando **BCrypt** ou equivalente.
   - **Rate Limiting:** O sistema deve limitar a quantidade de requisições feitas por um usuário dentro de um período de tempo para evitar abusos, ataques de força bruta e sobrecarga do servidor.
+- **Testes Automatizados:** O sistema deve ser validado através de testes automatizados utilizando:
+  - **JUnit** → Para testes unitários das regras de negócio.
+  - **Mockito** → Para criação de objetos mock e simulação de dependências durante os testes.
+- **Scripts de Automação:** O sistema deve contar com scripts para facilitar a configuração do banco de dados usando Docker:
+  - **`start.sh`** → Cria uma **Network Docker isolada** e inicia os containers **PostgreSQL** e **pgAdmin** dentro dessa rede.
+  - **`stop.sh`** → Para e remove os containers do banco de dados e pgAdmin, além de remover a **Network Docker** criada.
 
 ---
 
@@ -114,8 +120,9 @@ EMAIL_COMUNICACAO=
 SENHA_EMAIL_COMUNICACAO=
 ```
 
-3. Execute o comando:
+3. Execute os comandos:
    ```bash
+   ./start.sh
    ./mvnw spring-boot:run
    ```
 
@@ -168,11 +175,37 @@ SENHA_EMAIL_COMUNICACAO=
 
 ## 📜 Tecnologias Utilizadas
 
-- **Back-End:** Java com Framework Spring Boot.
-- **Banco de Dados:** PostgreSQL.
-- **Segurança:**
-  - OAuth 2.0 com Google.
-  - Spring Security com JWT.
+### 🔹 **Back-End**
+- **Linguagem:** Java  
+- **Framework:** Spring Boot  
+- **Gerenciamento de Dependências:** Maven  
+
+### 🔹 **Banco de Dados**
+- **Banco de Dados Relacional:** PostgreSQL  
+- **ORM:** Spring Data JPA  
+
+### 🔹 **Segurança**
+- **Autenticação:** Spring Security  
+- **Autenticação via Terceiros:** OAuth 2.0 com Google  
+- **Token de Segurança:** JWT (JSON Web Token)  
+- **Criptografia de Senhas:** BCrypt  
+- **Rate Limiting:** Bucket4j
+
+### 🔹 **Infraestrutura e DevOps**
+- **Containerização:** Docker  
+- **Gerenciamento de Containers:** Docker Compose  
+- **Administração do Banco de Dados:** pgAdmin  
+- **Scripts de Automação:** Bash Scripts (`start.sh` e `stop.sh`)  
+
+### 🔹 **Testes Automatizados**
+- **Testes Unitários e de Integração:** JUnit  
+- **Mock de Dependências:** Mockito  
+- **Testes de Segurança:** Spring Security Test
+
+### 🔹 **Outras Bibliotecas e Utilitários**
+- **Manipulação de JSON:** Jackson  
+- **Envio de E-mails:** Spring Mail  
+- **Logs e Monitoramento:** Spring Boot Actuator e SLF4J  
 
 ---
 
