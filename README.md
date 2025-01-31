@@ -42,10 +42,10 @@ Este documento descreve os requisitos para o desenvolvimento de um software para
 ### ✅ Requisitos Funcionais
 - **Autenticação e autorização:** O sistema deve possuir autenticação de usuários.
 - **Armazenamento de gastos:** Criar novos gastos para armazenar no mês.
-- **Adicionar uma categoria a um gasto:** Vincular cada gasto a uma categoria.
-- **Gerar relatórios:** Realizar relatórios de gastos mensais, trimestrais, semestrais e anuais.
+- **Adicionar uma categoria a um gasto:** Vincular cada gasto a uma categoria e a um usuário.
+- **Gerar relatórios:** Realizar relatórios de gastos.
 - **Tratamento de exceções:** O sistema deve possuir tratamento de exceções com respostas personalizadas.
-- **Testes de integração:** Deve realizar testes automatizados de integração.
+- **Testes de integração:** Deve realizar testes automatizados.
 
 ### 🔒 Requisitos Não Funcionais
 - **Linguagem:** O sistema será feito em Java utilizando o framework Spring Boot.
@@ -63,8 +63,31 @@ Este documento descreve os requisitos para o desenvolvimento de um software para
 - PostgreSQL
 
 ### 📌 **Passos**
-1. Configure as variáveis de ambiente (`DB_USERNAME`, `DB_PASSWORD`, `JWT_PUBLIC_KEY`, etc.).
-2. Execute o comando:
+1. **Configure as variáveis de ambiente** criando um arquivo `.env` na raiz do projeto e preenchendo os valores conforme necessário:
+
+```plaintext
+# Configuração do Banco de Dados
+DB_USERNAME=postgres
+DB_PASSWORD=sua_senha
+
+# Chaves JWT para autenticação
+JWT_PUBLIC_KEY=
+JWT_PRIVATE_KEY=
+
+# Chave de API para segurança
+API_KEY=
+
+# Configuração do OAuth2 (Login com Google)
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# Configuração de E-mail (Envio de notificações)
+ADMIN_EMAIL=
+EMAIL_COMUNICACAO=
+SENHA_EMAIL_COMUNICACAO=
+```
+
+3. Execute o comando:
    ```bash
    ./mvnw spring-boot:run
    ```
