@@ -1,5 +1,7 @@
 # Gerenciamento de Gastos - Back-End
 
+Repositório do Front-End: https://github.com/vnny8/Gerenciamento-de-Gastos-Front-End
+
 ## 📌 Introdução
 Este documento descreve os requisitos para o desenvolvimento de um software para gerenciamento de gastos pessoais, com Front-End em ReactJs, Back-End em Java Spring Boot e Banco de Dados em PostgreSQL. O objetivo é criar uma solução simples e eficaz que permita o gerenciamento de gastos do mês.
 
